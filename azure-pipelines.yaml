@@ -20,13 +20,13 @@ jobs:
       python36:
         CONFIG: win_c_compilervs2015python3.6
   steps:
+    - script: choco install vcpython27
+
     - powershell: |
         $client = new-object System.Net.WebClient
         $client.DownloadFile("https://raw.githubusercontent.com/dask/dask-image/master/.appveyor_support/install_miniconda.bat","$(System.DefaultWorkingDirectory)\install_miniconda.bat")
 
     - script: install_miniconda.bat
-
-    - script: https://raw.githubusercontent.com/dask/dask-image/master/.appveyor_support/install_miniconda.bat
 
     - script: set PYTHONUNBUFFERED=1
 
