@@ -30,6 +30,8 @@ jobs:
 
     # - script: install_miniconda.bat
     - task: CondaEnvironment@1
+      inputs:
+        packageSpecs: ""
 
     - script: set PYTHONUNBUFFERED=1
 
@@ -75,7 +77,9 @@ jobs:
 
   - task: CondaEnvironment@1
     inputs:
-      packageSpecs: 'python=3.6' # Optional
+      packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=2' # Optional
+      installOptions: "-c conda-forge"
+      updateConda: false
 
   - script: |
       ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
@@ -85,7 +89,6 @@ jobs:
       echo ""
       echo "Configuring conda."
       
-      conda install --yes --quiet conda-forge::conda-forge-ci-setup=2
       setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
 
       source run_conda_forge_build_setup
