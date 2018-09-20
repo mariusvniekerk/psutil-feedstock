@@ -103,8 +103,7 @@ jobs:
     displayName: 'Perform the build an image'
     inputs:
       command: 'run'
-      containerName: condaforge/linux-anvil
-      ports: 8084
+      imageName: condaforge/linux-anvil
       volumes: '$(System.DefaultWorkingDirectory):/src'
       workingDirectory: /src
       containerCommand: './.circleci/run_docker_build.sh'
