@@ -106,6 +106,20 @@ jobs:
       imageName: condaforge/linux-anvil
       volumes: '$(System.DefaultWorkingDirectory):/src'
       workingDirectory: /src
-      containerCommand: './.circleci/run_docker_build.sh'
+      containerCommand: 'ls'
+      envVars: |
+        CONFIG=$(CONFIG)
+
+
+
+  - task: Docker@1
+    displayName: 'Perform the build an image'
+    inputs:
+      command: 'run'
+      runInBackground: false
+      imageName: condaforge/linux-anvil
+      volumes: '$(System.DefaultWorkingDirectory):/src'
+      workingDirectory: /src
+      containerCommand: '/src/.circleci/run_docker_build.sh'
       envVars: |
         CONFIG=$(CONFIG)
