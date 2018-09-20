@@ -119,5 +119,6 @@ jobs:
       python36:
         CONFIG: linux_python3.6
   steps:
+  - script: sudo pip install --upgrade pip
   - script: sudo pip install setuptools
   - script: '.circleci/run_docker_build.sh'
