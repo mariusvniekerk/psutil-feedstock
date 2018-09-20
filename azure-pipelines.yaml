@@ -121,4 +121,4 @@ jobs:
   steps:
   - script: sudo pip install --upgrade pip
   - script: sudo pip install setuptools
-  - script: '.circleci/run_docker_build.sh'
+  - script: sudo '.circleci/run_docker_build.sh'
