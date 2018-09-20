@@ -9,7 +9,8 @@
 jobs:
 - job: win_64
   pool:
-    vmImage: vs2015-win2012r2
+    # vmImage: vs2015-win2012r2
+    vmImage: vs2017-win2016
   strategy:
     maxParallel: 4  
     matrix:
@@ -118,5 +119,5 @@ jobs:
       python36:
         CONFIG: linux_python3.6
   steps:
-  - script: 
+  - script: sudo pip install setuptools
   - script: '.circleci/run_docker_build.sh'
