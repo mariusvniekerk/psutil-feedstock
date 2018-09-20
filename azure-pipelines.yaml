@@ -9,7 +9,7 @@
 jobs:
 - job: win_64
   pool:
-    vmImage: 
+    vmImage: vs2015-win2012r2
   strategy:
     maxParallel: 4  
     matrix:
@@ -40,7 +40,7 @@ jobs:
 
 - job: osx_64
   pool:
-    vmImage: macOS 10.13
+    vmImage: xcode9-macos10.13
   strategy:
     maxParallel: 4  
     matrix:
@@ -88,7 +88,7 @@ jobs:
 
 - job: linux_64
   pool:
-    vmImage: linux-x64
+    vmImage: ubuntu-16.04
   strategy:
     maxParallel: 4
     matrix:
