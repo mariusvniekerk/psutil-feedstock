@@ -67,7 +67,10 @@ jobs:
     inputs:
       packageSpecs: 'python=3.6' # Optional
 
-  # Configure conda.
+  - script: |
+      ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+      echo "1"
+
   - script: |
       echo ""
       echo "Configuring conda."
@@ -76,8 +79,8 @@ jobs:
       setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
 
       source run_conda_forge_build_setup
+    displayName: Configure conda and conda-build
 
-  # compiler cleanup
   - script: |
       mangle_compiler ./ ./recipe ./.ci_support/${CONFIG}.yaml
     displayName: Mangle compiler
