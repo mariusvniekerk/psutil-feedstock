@@ -1,0 +1,101 @@
+resources:
+  containers:
+  - container: linux-anvil  # identifier (no spaces allowed)
+    image: condaforge/linux-anvil  # container image name
+    localImage: false  # whether to build the image locally instead of pulling from a registry
+
+jobs:
+- job: win-64
+  pool:
+    vmImage: 
+  matrix:
+    python27:
+      CONFIG: win_c_compilervs2008python2.7
+    python35:
+      CONFIG: win_c_compilervs2015python3.5
+    python36:
+      CONFIG: win_c_compilervs2015python3.6
+  steps:
+    - task: CondaEnvironment@1
+      inputs:
+        packageSpecs: 'python=3.6' # Optional
+        updateConda: true # Optional
+
+    - script: set PYTHONUNBUFFERED=1
+
+    # Add our channels.
+    - script: conda.exe config --set show_channel_urls true
+    - script: conda.exe config --remove channels defaults
+    - script: conda.exe config --add channels defaults
+    - script: conda.exe config --add channels conda-forge
+
+    # Configure the VM.
+    - script: conda.exe install -n root --quiet --yes conda-forge-ci-setup=2
+    - script: run_conda_forge_build_setup
+    - script: conda.exe build recipe -m .ci_support\%CONFIG%.yaml --quiet
+
+- job: osx-64
+  pool:
+    vmImage: macOS 10.13
+  matrix:
+    python27:
+      CONFIG: osx_python2.7
+    python35:
+      CONFIG: osx_python3.5
+    python36:
+      CONFIG: osx_python3.6
+  steps:
+  - script: |
+      echo ""
+      echo "Removing homebrew from Travis CI to avoid conflicts."
+      curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall > ~/uninstall_homebrew
+      chmod +x ~/uninstall_homebrew
+      ~/uninstall_homebrew -fq
+      rm ~/uninstall_homebrew
+  
+  - script: |
+      echo ""
+      echo "Installing a fresh version of Miniconda."
+      MINICONDA_URL="https://repo.continuum.io/miniconda"
+      MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
+      curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
+      bash $MINICONDA_FILE -b
+
+  # Configure conda.
+  - script: |
+      echo ""
+      echo "Configuring conda."
+      source /Users/travis/miniconda3/bin/activate root
+
+      conda install --yes --quiet conda-forge::conda-forge-ci-setup=2
+      setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
+
+      source run_conda_forge_build_setup
+
+  # compiler cleanup
+  - script: |
+      mangle_compiler ./ ./recipe ./.ci_support/${CONFIG}.yaml
+
+  - script: |
+      # generate the build number clobber
+      make_build_number ./ ./recipe ./.ci_support/${CONFIG}.yaml
+  - script: | 
+      conda build ./recipe -m ./.ci_support/${CONFIG}.yaml --clobber-file ./.ci_support/clobber_${CONFIG}.yaml
+  - script: |
+      upload_package ./ ./recipe ./.ci_support/${CONFIG}.yaml
+
+- job: linux-64
+  pool:
+    vmImage: linux-x64
+  matrix:
+    python27:
+      CONFIG: osx_python2.7
+    python35:
+      CONFIG: osx_python3.5
+    python36:
+      CONFIG: osx_python3.6
+  container: linux-anvil
+  steps:
+  - task: BatchScript@1
+    inputs:
+      filename: ./.circleci/run_docker_build.sh
