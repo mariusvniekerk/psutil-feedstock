@@ -1,8 +1,10 @@
-resources:
-  containers:
-  - container: linux-anvil  # identifier (no spaces allowed)
-    image: condaforge/linux-anvil  # container image name
-    localImage: false  # whether to build the image locally instead of pulling from a registry
+# This is exclusively windows containers?
+# 
+# resources:
+#   containers:
+#   - container: linux-anvil  # identifier (no spaces allowed)
+#     image: condaforge/linux-anvil  # container image name
+#     localImage: false  # whether to build the image locally instead of pulling from a registry
 
 jobs:
 - job: win_64
@@ -57,20 +59,16 @@ jobs:
       ~/uninstall_homebrew -fq
       rm ~/uninstall_homebrew
   
-  - script: |
-      echo ""
-      echo "Installing a fresh version of Miniconda."
-      MINICONDA_URL="https://repo.continuum.io/miniconda"
-      MINICONDA_FILE="Miniconda3-latest-MacOSX-x86_64.sh"
-      curl -L -O "${MINICONDA_URL}/${MINICONDA_FILE}"
-      bash $MINICONDA_FILE -b
+  - task: CondaEnvironment@1
+    inputs:
+      packageSpecs: 'python=3.6' # Optional
+      updateConda: true # Optional
 
   # Configure conda.
   - script: |
       echo ""
       echo "Configuring conda."
-      source /Users/travis/miniconda3/bin/activate root
-
+      
       conda install --yes --quiet conda-forge::conda-forge-ci-setup=2
       setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
 
@@ -95,13 +93,21 @@ jobs:
     maxParallel: 4
     matrix:
       python27:
-        CONFIG: osx_python2.7
+        CONFIG: linux_python2.7
       python35:
-        CONFIG: osx_python3.5
+        CONFIG: linux_python3.5
       python36:
-        CONFIG: osx_python3.6
+        CONFIG: linux_python3.6
   container: linux-anvil
   steps:
-  - task: BatchScript@1
+  - task: Docker@1
+    displayName: 'Perform the build an image'
     inputs:
-      filename: ./.circleci/run_docker_build.sh
+      command: 'run'
+      containerName: condaforge/linux-anvil
+      ports: 8084
+      volumes: '$(System.DefaultWorkingDirectory):/src'
+      workingDirectory: /src
+      containerCommand: './.circleci/run_docker_build.sh'
+      envVars: |
+        CONFIG=$(CONFIG)
