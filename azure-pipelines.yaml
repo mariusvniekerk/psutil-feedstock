@@ -8,13 +8,15 @@ jobs:
 - job: win-64
   pool:
     vmImage: 
-  matrix:
-    python27:
-      CONFIG: win_c_compilervs2008python2.7
-    python35:
-      CONFIG: win_c_compilervs2015python3.5
-    python36:
-      CONFIG: win_c_compilervs2015python3.6
+  strategy:
+    maxParallel: 4  
+    matrix:
+      python27:
+        CONFIG: win_c_compilervs2008python2.7
+      python35:
+        CONFIG: win_c_compilervs2015python3.5
+      python36:
+        CONFIG: win_c_compilervs2015python3.6
   steps:
     - task: CondaEnvironment@1
       inputs:
@@ -37,13 +39,15 @@ jobs:
 - job: osx-64
   pool:
     vmImage: macOS 10.13
-  matrix:
-    python27:
-      CONFIG: osx_python2.7
-    python35:
-      CONFIG: osx_python3.5
-    python36:
-      CONFIG: osx_python3.6
+  strategy:
+    maxParallel: 4  
+    matrix:
+      python27:
+        CONFIG: osx_python2.7
+      python35:
+        CONFIG: osx_python3.5
+      python36:
+        CONFIG: osx_python3.6
   steps:
   - script: |
       echo ""
@@ -87,13 +91,15 @@ jobs:
 - job: linux-64
   pool:
     vmImage: linux-x64
-  matrix:
-    python27:
-      CONFIG: osx_python2.7
-    python35:
-      CONFIG: osx_python3.5
-    python36:
-      CONFIG: osx_python3.6
+  strategy:
+    maxParallel: 4
+    matrix:
+      python27:
+        CONFIG: osx_python2.7
+      python35:
+        CONFIG: osx_python3.5
+      python36:
+        CONFIG: osx_python3.6
   container: linux-anvil
   steps:
   - task: BatchScript@1
