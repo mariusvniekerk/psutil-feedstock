@@ -98,7 +98,6 @@ jobs:
         CONFIG: linux_python3.5
       python36:
         CONFIG: linux_python3.6
-  container: linux-anvil
   steps:
   - task: Docker@1
     displayName: 'Perform the build an image'
