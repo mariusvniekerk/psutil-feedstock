@@ -51,17 +51,17 @@ jobs:
       python36:
         CONFIG: osx_python3.6
   steps:
-  - displayName: Remove homebrew
-    script: |
+  - script: |
       echo ""
       echo "Removing homebrew from Travis CI to avoid conflicts."
       curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall > ~/uninstall_homebrew
       chmod +x ~/uninstall_homebrew
       ~/uninstall_homebrew -fq
       rm ~/uninstall_homebrew
-  
-  - displayName: Chown conda
-    script: sudo chown -R ${USER} /usr/local/miniconda
+    displayName: Remove homebrew
+
+  - script: sudo chown -R ${USER} /usr/local/miniconda
+    displayName: Chown conda
 
   - task: CondaEnvironment@1
     inputs:
@@ -80,14 +80,20 @@ jobs:
   # compiler cleanup
   - script: |
       mangle_compiler ./ ./recipe ./.ci_support/${CONFIG}.yaml
+    displayName: Mangle compiler
 
   - script: |
-      # generate the build number clobber
       make_build_number ./ ./recipe ./.ci_support/${CONFIG}.yaml
+    displayName: Generate build number clobber
+
   - script: | 
       conda build ./recipe -m ./.ci_support/${CONFIG}.yaml --clobber-file ./.ci_support/clobber_${CONFIG}.yaml
+    displayName: Build recipe
+
   - script: |
       upload_package ./ ./recipe ./.ci_support/${CONFIG}.yaml
+    displayName: Upload recipe
+
 
 - job: linux_64
   pool:
