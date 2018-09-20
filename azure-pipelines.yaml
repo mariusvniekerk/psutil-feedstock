@@ -122,5 +122,5 @@ jobs:
         CONFIG: linux_python3.6
   steps:
   - script: sudo pip install --upgrade pip
-  - script: sudo pip install setuptools
-  - script: sudo '.circleci/run_docker_build.sh'
+  - script: sudo pip install setuptools shyaml
+  - script: .circleci/run_docker_build.sh
