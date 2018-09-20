@@ -62,7 +62,6 @@ jobs:
   - task: CondaEnvironment@1
     inputs:
       packageSpecs: 'python=3.6' # Optional
-      updateConda: true # Optional
 
   # Configure conda.
   - script: |
