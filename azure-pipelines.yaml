@@ -103,6 +103,7 @@ jobs:
     displayName: 'Perform the build an image'
     inputs:
       command: 'run'
+      runInBackground: false
       imageName: condaforge/linux-anvil
       volumes: '$(System.DefaultWorkingDirectory):/src'
       workingDirectory: /src
