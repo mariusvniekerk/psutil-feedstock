@@ -98,28 +98,5 @@ jobs:
       python36:
         CONFIG: linux_python3.6
   steps:
-  - task: Docker@1
-    displayName: 'Perform the build an image'
-    inputs:
-      command: 'run'
-      runInBackground: false
-      imageName: condaforge/linux-anvil
-      volumes: '$(System.DefaultWorkingDirectory):/src'
-      workingDirectory: /src
-      containerCommand: 'ls'
-      envVars: |
-        CONFIG=$(CONFIG)
-
-
-
-  - task: Docker@1
-    displayName: 'Perform the build an image'
-    inputs:
-      command: 'run'
-      runInBackground: false
-      imageName: condaforge/linux-anvil
-      volumes: '$(System.DefaultWorkingDirectory):/src'
-      workingDirectory: /src
-      containerCommand: '/src/.circleci/run_docker_build.sh'
-      envVars: |
-        CONFIG=$(CONFIG)
+  - script: 
+      '.circleci/run_docker_build.sh'
