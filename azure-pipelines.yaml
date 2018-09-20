@@ -51,7 +51,8 @@ jobs:
       python36:
         CONFIG: osx_python3.6
   steps:
-  - script: |
+  - displayname: Remove homebrew
+    script: |
       echo ""
       echo "Removing homebrew from Travis CI to avoid conflicts."
       curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall > ~/uninstall_homebrew
@@ -59,6 +60,9 @@ jobs:
       ~/uninstall_homebrew -fq
       rm ~/uninstall_homebrew
   
+  - displayName: Chown conda
+    script: sudo chown -R ${USER} /usr/local/miniconda
+
   - task: CondaEnvironment@1
     inputs:
       packageSpecs: 'python=3.6' # Optional
@@ -98,5 +102,6 @@ jobs:
       python36:
         CONFIG: linux_python3.6
   steps:
-  - script: 
-      '.circleci/run_docker_build.sh'
+  - script: 'sudo apt-get update'
+  - script: 'sudo apt-get install python-setuptools'
+  - script: '.circleci/run_docker_build.sh'
