@@ -51,7 +51,7 @@ jobs:
       python36:
         CONFIG: osx_python3.6
   steps:
-  - displayname: Remove homebrew
+  - displayName: Remove homebrew
     script: |
       echo ""
       echo "Removing homebrew from Travis CI to avoid conflicts."
