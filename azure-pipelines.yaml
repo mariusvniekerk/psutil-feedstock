@@ -21,7 +21,9 @@ jobs:
       python36:
         CONFIG: win_c_compilervs2015python3.6
   steps:
-    - script: choco install vcpython27
+    - script: |
+        choco install vcpython27
+        choco install vcexpress2010
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Install VS2008
 
@@ -48,9 +50,16 @@ jobs:
     - script: conda.exe config --add channels conda-forge
       displayName: configure conda
 
+    - script: |
+        conda.exe install --quiet --yes "conda-forge::vs2008_express_vc_python_patch"
+        call setup_x64
+      condition: contains(variables['CONFIG'], 'vs2008')
+      displayName: Install VS2008
+
     # Configure the VM.
-    - script: run_conda_forge_build_setup
+    - script: call run_conda_forge_build_setup
       displayName: conda-forge build setup
+      
     - script: conda.exe build recipe -m .ci_support\%CONFIG%.yaml --quiet
       displayName: Build recipe
 
