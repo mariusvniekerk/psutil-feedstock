@@ -51,15 +51,21 @@ jobs:
       displayName: configure conda
 
     - script: |
+        echo on
         conda.exe install --quiet --yes "conda-forge::vs2008_express_vc_python_patch"
+      condition: contains(variables['CONFIG'], 'vs2008')
+      displayName: Install VS2008 x64 patch
+
+    - script: |
+        echo one_host        
         call setup_x64
       condition: contains(variables['CONFIG'], 'vs2008')
-      displayName: Install VS2008
+      displayName: Run VS2008 x64 patch
 
     # Configure the VM.
     - script: call run_conda_forge_build_setup
       displayName: conda-forge build setup
-      
+
     - script: conda.exe build recipe -m .ci_support\%CONFIG%.yaml --quiet
       displayName: Build recipe
 
