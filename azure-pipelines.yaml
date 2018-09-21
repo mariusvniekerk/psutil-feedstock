@@ -23,7 +23,7 @@ jobs:
   steps:
     - script: |
         choco install vcpython27
-        choco install vcexpress2010
+        choco install visualstudioexpress2008
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Install VS2008
 
