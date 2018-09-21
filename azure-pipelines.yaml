@@ -23,6 +23,7 @@ jobs:
   steps:
     - script: choco install vcpython27
       condition: contains(variables['CONFIG'], 'vs2008')
+      displayName: Install VS2008
 
     # - powershell: |
     #     $client = new-object System.Net.WebClient
@@ -31,20 +32,27 @@ jobs:
     # - script: install_miniconda.bat
     - task: CondaEnvironment@1
       inputs:
-        packageSpecs: ""
+        packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=2' # Optional
+        installOptions: "-c conda-forge"
+        updateConda: false
 
     - script: set PYTHONUNBUFFERED=1
 
     # Add our channels.
     - script: conda.exe config --set show_channel_urls true
+      displayName: configure conda
     - script: conda.exe config --remove channels defaults
+      displayName: configure conda
     - script: conda.exe config --add channels defaults
+      displayName: configure conda
     - script: conda.exe config --add channels conda-forge
+      displayName: configure conda
 
     # Configure the VM.
-    - script: conda.exe install -n root --quiet --yes conda-forge-ci-setup=2
     - script: run_conda_forge_build_setup
+      displayName: conda-forge build setup
     - script: conda.exe build recipe -m .ci_support\%CONFIG%.yaml --quiet
+      displayName: Build recipe
 
 - job: osx_64
   pool:
@@ -124,6 +132,9 @@ jobs:
       python36:
         CONFIG: linux_python3.6
   steps:
-  - script: sudo pip install --upgrade pip
-  - script: sudo pip install setuptools shyaml
+  - script: |
+      sudo pip install --upgrade pip
+      sudo pip install setuptools shyaml
+    displayName: Install dependencies
   - script: .circleci/run_docker_build.sh
+    displayName: Run docker build
