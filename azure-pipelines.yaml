@@ -38,21 +38,21 @@ jobs:
     #   condition: contains(variables['CONFIG'], 'vs2008')
     #   displayName: Install VS2008
 
-    - powershell: |
-        Set-PSDebug -Trace 1
-        $client = new-object System.Net.WebClient
-        $client.DownloadFile(
-            "https://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso",
-            "$(Agent.WorkFolder)\VS2008ExpressSP1.iso"
-        )
-        $out = Mount-DiskImage -ImagePath "$(Agent.WorkFolder)\VS2008ExpressSP1.iso" -PassThru
-        $driveLetter = ($out | Get-Volume).DriveLetter
-        cd "${driveLetter}:\VCExpress"
-        Start-Process ".\setup.exe" /q -Wait
-        cd "${driveLetter}:\VCSExpress"
-        Start-Process ".\setup.exe" /q -Wait
-      condition: contains(variables['CONFIG'], 'vs2008')
-      displayName: 'Install VS2008ExpressSP1 VCExpress'
+    # - powershell: |
+    #     Set-PSDebug -Trace 1
+    #     $client = new-object System.Net.WebClient
+    #     $client.DownloadFile(
+    #         "https://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso",
+    #         "$(Agent.WorkFolder)\VS2008ExpressSP1.iso"
+    #     )
+    #     $out = Mount-DiskImage -ImagePath "$(Agent.WorkFolder)\VS2008ExpressSP1.iso" -PassThru
+    #     $driveLetter = ($out | Get-Volume).DriveLetter
+    #     cd "${driveLetter}:\VCExpress"
+    #     Start-Process ".\setup.exe" /q -Wait
+    #     cd "${driveLetter}:\VCSExpress"
+    #     Start-Process ".\setup.exe" /q -Wait
+    #   condition: contains(variables['CONFIG'], 'vs2008')
+    #   displayName: 'Install VS2008ExpressSP1 VCExpress'
 
     # - powershell: |
     #     $client = new-object System.Net.WebClient
@@ -77,22 +77,25 @@ jobs:
     - script: conda.exe config --add channels conda-forge
       displayName: configure conda
 
-    - script: |
-        echo on
-        conda.exe install --quiet --yes "conda-forge::vs2008_express_vc_python_patch"
-      condition: contains(variables['CONFIG'], 'vs2008')
-      displayName: Install VS2008 x64 patch
+    # - script: |
+    #     echo on
+    #     conda.exe install --quiet --yes "conda-forge::vs2008_express_vc_python_patch"
+    #   condition: contains(variables['CONFIG'], 'vs2008')
+    #   displayName: Install VS2008 x64 patch
 
-    - script: |
-        echo on 
-        call "C:\miniconda\scripts\setup_x64.bat"
-      condition: contains(variables['CONFIG'], 'vs2008')
-      displayName: Run VS2008 x64 patch
-      continueOnError: true
+    # - script: |
+    #     echo on 
+    #     call "C:\miniconda\scripts\setup_x64.bat"
+    #   condition: contains(variables['CONFIG'], 'vs2008')
+    #   displayName: Run VS2008 x64 patch
+    #   continueOnError: true
 
     # Configure the VM.
     - script: call run_conda_forge_build_setup
       displayName: conda-forge build setup
+      env: {
+        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0"
+      }
 
     - script: conda.exe build recipe -m .ci_support\%CONFIG%.yaml --quiet
       displayName: Build recipe
