@@ -39,6 +39,8 @@ jobs:
         ECHO ON
         SET vcpython=C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0
         
+        DIR "%vcpython%"
+
         CALL "%vcpython%\\vcvarsall.bat" %*
         "@
 
