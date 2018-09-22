@@ -101,7 +101,7 @@ jobs:
       displayName: Build recipe (vs2008)
       env: {
         # VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0"
-        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\bin"
+        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC"
       }
       condition: contains(variables['CONFIG'], 'vs2008')
 
