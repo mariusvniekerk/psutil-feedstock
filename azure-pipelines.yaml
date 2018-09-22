@@ -102,7 +102,10 @@ jobs:
         call vcvarsall.bat %1
         "@
 
-        Set-Content -Value $batchcontent -Path "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0\VC\vcvarsall.bat"
+        $batchPath = "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\vcvarsall.bat"
+        New-Item -Path $batchPath -ItemType "file" -Force
+        
+        Set-Content -Value $batchcontent -Path $batchPath
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Patch vs2008
 
