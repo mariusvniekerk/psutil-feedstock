@@ -36,8 +36,11 @@ jobs:
         Set-PSDebug -Trace 1
         
         $batchcontent = @"
+        ECHO ON
+        
         cd "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0"
-        call vcvarsall.bat %1
+        
+        CALL "vcvarsall.bat" "%1"
         "@
 
         $batchPath = "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\vcvarsall.bat"
