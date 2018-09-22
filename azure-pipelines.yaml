@@ -41,8 +41,11 @@ jobs:
     - powershell: |
         Set-PSDebug -Trace 1
         $client = new-object System.Net.WebClient
-        $client.DownloadFile("https://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso", "VS2008ExpressSP1.iso")
-        $out = Mount-DiskImage -ImagePath ".\VS2008ExpressSP1.iso" -PassThru
+        $client.DownloadFile(
+            "https://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso",
+            "$(Agent.WorkFolder)\VS2008ExpressSP1.iso"
+        )
+        $out = Mount-DiskImage -ImagePath "$(Agent.WorkFolder)\VS2008ExpressSP1.iso" -PassThru
         $driveLetter = ($out | Get-Volume).DriveLetter
         cd "${driveLetter}:\VCExpress"
         Start-Process ".\setup.exe" /q -Wait
