@@ -88,6 +88,7 @@ jobs:
         call "C:\miniconda\scripts\setup_x64.bat"
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Run VS2008 x64 patch
+      continueOnError: true
 
     # Configure the VM.
     - script: call run_conda_forge_build_setup
