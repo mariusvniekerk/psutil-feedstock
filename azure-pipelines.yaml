@@ -94,14 +94,25 @@ jobs:
     - script: call run_conda_forge_build_setup
       displayName: conda-forge build setup
 
+    - powershell: |
+        Set-PSDebug -Trace 1
+        
+        $batchcontent = @"
+        cd "C:\\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0"
+        call vcvarsall.bat %1
+        "@"
+
+        Set-Content -Value $batchcontent -Path "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0\VC\vcvarsall.bat"
+      condition: contains(variables['CONFIG'], 'vs2008')
+      displayName: Patch vs2008
+
     # Special cased version setting some more things!
     - script: |
-        set PATH "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0\VC\bin;%PATH%"
         conda.exe build recipe -m .ci_support\%CONFIG%.yaml --quiet
       displayName: Build recipe (vs2008)
       env: {
         # VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0"
-        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC"
+        VS90COMNTOOLS: "C:\\Program Files (x86)\\Common Files\\Microsoft\\Visual C++ for Python\\9.0\\VC\\bin",
       }
       condition: contains(variables['CONFIG'], 'vs2008')
 
