@@ -100,7 +100,7 @@ jobs:
         $batchcontent = @"
         cd "C:\\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0"
         call vcvarsall.bat %1
-        "@"
+        "@
 
         Set-Content -Value $batchcontent -Path "C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0\VC\vcvarsall.bat"
       condition: contains(variables['CONFIG'], 'vs2008')
