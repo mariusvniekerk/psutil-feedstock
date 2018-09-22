@@ -36,13 +36,13 @@ jobs:
     #   condition: contains(variables['CONFIG'], 'vs2008')
     #   displayName: Install VS2008
 
-    # - powershell: |
-    #     $client = new-object System.Net.WebClient
-    #     $client.DownloadFile("https://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso","C:\Downloads\VS2008ExpressSP1.iso")
-    #     $out = Mount-DiskImage -ImagePath "C:\Downloads\VS2008ExpressSP1.iso" -PassThru
-    #     $driveLetter = ($out | Get-Volume).DriveLetter
-    #     cd "${driveLetter}:\VCExpress"
-    #     .\setup.exe /q | Out-Null
+    - powershell: |
+        $client = new-object System.Net.WebClient
+        $client.DownloadFile("https://download.microsoft.com/download/E/8/E/E8EEB394-7F42-4963-A2D8-29559B738298/VS2008ExpressWithSP1ENUX1504728.iso","C:\Downloads\VS2008ExpressSP1.iso")
+        $out = Mount-DiskImage -ImagePath "C:\Downloads\VS2008ExpressSP1.iso" -PassThru
+        $driveLetter = ($out | Get-Volume).DriveLetter
+        cd "${driveLetter}:\VCExpress"
+        Start-Process ".\setup.exe" /q -Wait
 
     # - powershell: |
     #     $client = new-object System.Net.WebClient
@@ -73,11 +73,11 @@ jobs:
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Install VS2008 x64 patch
 
-    # - script: |
-    #     echo on 
-    #     call "C:\miniconda\scripts\setup_x64.bat"
-    #   condition: contains(variables['CONFIG'], 'vs2008')
-    #   displayName: Run VS2008 x64 patch
+    - script: |
+        echo on 
+        call "C:\miniconda\scripts\setup_x64.bat"
+      condition: contains(variables['CONFIG'], 'vs2008')
+      displayName: Run VS2008 x64 patch
 
     # Configure the VM.
     - script: call run_conda_forge_build_setup
