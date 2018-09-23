@@ -165,6 +165,22 @@ jobs:
       linux_c_compilertoolchain_cpython3.7:
         CONFIG: linux_c_compilertoolchain_cpython3.7
   steps:
+
+  - script: |
+      set -x
+      set -e
+      brew install xz
+      curl -o MacOSX10.9.sdk.tar.xz https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
+      sudo tar -xf MacOSX10.9.sdk.tar.xz -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+    displayName: SDK
+
+  - script: |
+      set -x
+      set -e
+      ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+      echo "1"
+    displayName: List installed SDKs
+
   - script: |
       echo ""
       echo "Removing homebrew from Travis CI to avoid conflicts."
@@ -173,14 +189,6 @@ jobs:
       ~/uninstall_homebrew -fq
       rm ~/uninstall_homebrew
     displayName: Remove homebrew
-
-  - script: |
-      curl -o MacOSX10.9.sdk.tar.xz https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
-      sudo tar -xf MacOSX10.9.sdk.tar.xz -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-  
-  - script: |
-      ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-      echo "1"
 
   - script: |
       set -x
