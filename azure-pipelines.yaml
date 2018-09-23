@@ -183,6 +183,8 @@ jobs:
       echo "1"
 
   - script: |
+      set -x
+      set -e
       echo "Installing Miniconda"
       curl -o $HOME/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
       chmod +x $HOME/miniconda.sh
