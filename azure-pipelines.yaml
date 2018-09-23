@@ -196,7 +196,7 @@ jobs:
       echo "Installing Miniconda"
       curl -o $(Build.StagingDirectory)/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
       chmod +x $(Build.StagingDirectory)/miniconda.sh
-      $(Build.StagingDirectory)/miniconda.sh -b -p $HOME/miniconda
+      $(Build.StagingDirectory)/miniconda.sh -b -p $(Build.StagingDirectory)/miniconda
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       echo "Setting up Conda environment"
     displayName: 'Install miniconda'
