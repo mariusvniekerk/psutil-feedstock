@@ -198,7 +198,7 @@ jobs:
       setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
 
       source run_conda_forge_build_setup
-      conda update --override-channels -c defaults -c conda-forge --all
+      conda update --override-channels -c conda-forge -c defaults --all
     displayName: Configure conda and conda-build
 
   - script: |
