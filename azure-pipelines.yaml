@@ -202,11 +202,16 @@ jobs:
     displayName: 'Install miniconda'
   
   - script: |
+      set -x
+      set -e
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       conda install conda-forge::conda-forge-ci-setup=2
     displayName: 'Add ci-setup=2'
 
   - script: |
+      set -x
+      set -e
+      
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       echo ""
       echo "Configuring conda."
@@ -218,21 +223,33 @@ jobs:
     displayName: Configure conda and conda-build
 
   - script: |
+      set -x
+      set -e
+
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       mangle_compiler ./ ./recipe ./.ci_support/${CONFIG}.yaml
     displayName: Mangle compiler
 
   - script: |
+      set -x
+      set -e
+
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       make_build_number ./ ./recipe ./.ci_support/${CONFIG}.yaml
     displayName: Generate build number clobber
 
   - script: | 
+      set -x
+      set -e
+
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       conda build ./recipe -m ./.ci_support/${CONFIG}.yaml --clobber-file ./.ci_support/clobber_${CONFIG}.yaml
     displayName: Build recipe
 
   - script: |
+      set -x
+      set -e
+
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
       upload_package ./ ./recipe ./.ci_support/${CONFIG}.yaml
     displayName: Upload recipe
