@@ -20,6 +20,8 @@ jobs:
         CONFIG: win_c_compilervs2015python3.5
       python36:
         CONFIG: win_c_compilervs2015python3.6
+      python37:
+        CONFIG: win_c_compilervs2015python3.7
   steps:
     # Need to install VC 9.0 only for Python 2.7
     # Once we understand how to do tasks conditional on build matrix variables
@@ -44,6 +46,7 @@ jobs:
         ECHO ON
         SET vcpython=C:\Program Files (x86)\Common Files\Microsoft\Visual C++ for Python\9.0
         
+
         DIR "%vcpython%"
 
         CALL "%vcpython%\vcvarsall.bat" %*
@@ -145,12 +148,22 @@ jobs:
   strategy:
     maxParallel: 4  
     matrix:
-      python27:
-        CONFIG: osx_python2.7
-      python35:
-        CONFIG: osx_python3.5
-      python36:
-        CONFIG: osx_python3.6
+      linux_c_compilerclangpython2.7:
+        CONFIG: linux_c_compilerclangpython2.7
+      linux_c_compilerclangpython3.5:
+        CONFIG: linux_c_compilerclangpython3.5
+      linux_c_compilerclangpython3.6:
+        CONFIG: linux_c_compilerclangpython3.6
+      linux_c_compilerclangpython3.7:
+        CONFIG: linux_c_compilerclangpython3.7
+      linux_c_compilertoolchain_cpython2.7:
+        CONFIG: linux_c_compilertoolchain_cpython2.7
+      linux_c_compilertoolchain_cpython3.5:
+        CONFIG: linux_c_compilertoolchain_cpython3.5
+      linux_c_compilertoolchain_cpython3.6:
+        CONFIG: linux_c_compilertoolchain_cpython3.6
+      linux_c_compilertoolchain_cpython3.7:
+        CONFIG: linux_c_compilertoolchain_cpython3.7
   steps:
   - script: |
       echo ""
@@ -210,12 +223,22 @@ jobs:
   strategy:
     maxParallel: 4
     matrix:
-      python27:
-        CONFIG: linux_python2.7
-      python35:
-        CONFIG: linux_python3.5
-      python36:
-        CONFIG: linux_python3.6
+      linux_c_compilerclangpython2.7:
+        CONFIG: linux_c_compilerclangpython2.7
+      linux_c_compilerclangpython3.5:
+        CONFIG: linux_c_compilerclangpython3.5
+      linux_c_compilerclangpython3.6:
+        CONFIG: linux_c_compilerclangpython3.6
+      linux_c_compilerclangpython3.7:
+        CONFIG: linux_c_compilerclangpython3.7
+      linux_c_compilertoolchain_cpython2.7:
+        CONFIG: linux_c_compilertoolchain_cpython2.7
+      linux_c_compilertoolchain_cpython3.5:
+        CONFIG: linux_c_compilertoolchain_cpython3.5
+      linux_c_compilertoolchain_cpython3.6:
+        CONFIG: linux_c_compilertoolchain_cpython3.6
+      linux_c_compilertoolchain_cpython3.7:
+        CONFIG: linux_c_compilertoolchain_cpython3.7
   steps:
   - script: |
       sudo pip install --upgrade pip
