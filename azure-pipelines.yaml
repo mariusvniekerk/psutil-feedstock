@@ -177,19 +177,23 @@ jobs:
   - script: |
       curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -O MacOSX10.9.sdk.tar.xz
       sudo tar -xf MacOSX10.9.sdk.tar.xz -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-
-  - script: sudo chown -R ${USER} /usr/local/miniconda
-    displayName: Chown conda
-
-  - task: CondaEnvironment@1
-    inputs:
-      packageSpecs: 'python=3.6 conda-build conda conda-forge::conda-forge-ci-setup=2' # Optional
-      installOptions: "-c conda-forge"
-      updateConda: false
-
+  
   - script: |
       ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
       echo "1"
+
+  - script: |
+      echo "Installing Miniconda"
+      wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
+      chmod +x $HOME/miniconda
+      $HOME/miniconda.sh -b -p $HOME/miniconda
+      export PATH=$HOME/miniconda/bin:$PATH
+      echo "Setting up Conda environment"
+    displayName: 'Install miniconda'
+  
+  - script: |
+      conda install conda-forge::conda-forge-ci-setup=2
+    displayName: 'Add ci-setup=2'
 
   - script: |
       echo ""
