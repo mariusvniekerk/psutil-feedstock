@@ -52,6 +52,8 @@ jobs:
 
         Get-ChildItem -Path $batchDir
 
+        Get-ChildItem -Path ($batchDir + '\..')
+
       condition: contains(variables['CONFIG'], 'vs2008')
       displayName: Patch vs2008
 
