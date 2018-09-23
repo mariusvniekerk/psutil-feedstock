@@ -175,7 +175,7 @@ jobs:
     displayName: Remove homebrew
 
   - script: |
-      curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz -O MacOSX10.9.sdk.tar.xz
+      curl -o MacOSX10.9.sdk.tar.xz https://github.com/phracker/MacOSX-SDKs/releases/download/10.13/MacOSX10.9.sdk.tar.xz
       sudo tar -xf MacOSX10.9.sdk.tar.xz -C /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
   
   - script: |
@@ -184,8 +184,8 @@ jobs:
 
   - script: |
       echo "Installing Miniconda"
-      wget -q https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O $HOME/miniconda.sh
-      chmod +x $HOME/miniconda
+      curl -o $HOME/miniconda.sh https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
+      chmod +x $HOME/miniconda.sh
       $HOME/miniconda.sh -b -p $HOME/miniconda
       export PATH=$HOME/miniconda/bin:$PATH
       echo "Setting up Conda environment"
