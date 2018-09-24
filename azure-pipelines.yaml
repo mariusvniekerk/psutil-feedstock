@@ -205,7 +205,7 @@ jobs:
       set -x
       set -e
       export PATH=$(Build.StagingDirectory)/miniconda/bin:$PATH
-      conda install conda-forge::conda-forge-ci-setup=2
+      conda install --yes conda-forge::conda-forge-ci-setup=2
     displayName: 'Add ci-setup=2'
 
   - script: |
@@ -219,7 +219,7 @@ jobs:
       setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
 
       source run_conda_forge_build_setup
-      conda update --override-channels -c conda-forge -c defaults --all
+      conda update --yes --override-channels -c conda-forge -c defaults --all
     displayName: Configure conda and conda-build
 
   - script: |
